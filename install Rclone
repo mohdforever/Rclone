@@ -1,0 +1,130 @@
+#!/bin/bash
+clear
+#by snap
+#sudo snap install rclone --classic
+
+echo -n "This script will install Rclone software on your machine
+
+Rclone is a remote cloud storage mounter and compatible with
+    Service       .  Name
+---------------------------------
+1- Google Drive   .  gdrive
+2- OneDrive       .  onedrive
+3- Box            .  box
+4- DropBox        .  dropbox
+5- pCloud         .  pcloud
+6- Yandex Disk    .  yandex
+
+so, while configuring your remote cloud storage keep in mind these cloud services only.
+
+
+
+Note: use "name" discription as above schedule
+
+For Example :
+Google Drive >>>>  gdrive
+
+press enter to continue or Ctrl + C to exit "
+read enter
+
+
+sudo apt update
+curl https://rclone.org/install.sh | sudo bash
+
+
+
+echo -n "
+
+Remember to use 'name' againest your remote cloud storage as below 
+
+    Service       .  Name
+---------------------------------
+1- Google Drive   .  gdrive
+2- OneDrive       .  onedrive
+3- Box            .  box
+4- DropBox        .  dropbox
+5- pCloud         .  pcloud
+6- Yandex Disk    .  yandex
+
+###############################################
+#  For Example :                              #
+#  Google Drive >>>>  gdrive                  #
+###############################################
+
+so, while configuring your cloud storage keep in mind these cloud services only.
+
+press enter to continue "
+read enter
+rclone config
+
+echo -n "
+
+Select your remote storage to mount it 
+
+    Service       .  Name
+---------------------------------
+1- Google Drive   .  gdrive
+2- OneDrive       .  onedrive
+3- Box            .  box
+4- DropBox        .  dropbox
+5- pCloud         .  pcloud
+6- Yandex Disk    .  yandex
+
+
+
+ [ 1 - 6 ] : "
+read mount
+
+auto_mount(){
+mkdir ~/${1}
+echo "#!/bin/bash
+rclone mount ${1}: ~/${1}" > ~/auto${1}
+chmod +x ~/auto${1}
+direct1=~/auto${1}
+bash  $direct1 &
+sudo echo "[Desktop Entry]
+Type=Application
+Exec=$direct1
+X-GNOME-Autostart-enabled=true
+NoDisplay=false
+Hidden=false
+Name[en_US]=rclone ${1}
+Comment[en_US]=No description
+X-GNOME-Autostart-Delay=5" > ~/.config/autostart/auto${1}.desktop
+}
+
+if [ $mount == "1" ]; then
+auto_mount gdrive 
+#${1} = gdrive
+fi
+
+if [ $mount == "2" ]; then
+auto_mount onedrive
+fi
+
+if [ $mount == "3" ]; then
+auto_mount box
+fi
+
+if [ $mount == "4" ]; then
+auto_mount dropbox
+fi
+
+if [ $mount == "5" ]; then
+auto_mount pcloud
+fi
+
+if [ $mount == "6" ]; then
+auto_mount yandex
+fi
+
+
+#echo "bash script" > ~/automount$(selected)
+#chmod +x ~/automount$(selected)
+
+
+
+read -p "Installation is complete.
+Press enter to continue" nothing
+clear
+
